@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Treino PPL</title>
+<meta name="theme-color" content="#0b0b0c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%8F%8B%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark;--bg:#0b0b0c;--card:#17171a;--text:#f4f4f6;--mut:#9a9aa3;--line:#2c2c32;--inp:#222227;--acc:#e63946}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+*{box-sizing:border-box}
+body{margin:0 auto;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;max-width:560px;padding:0 12px 40px}
+button{font-family:inherit;cursor:pointer}
+header{padding:18px 4px 8px}h1{margin:0;font-size:26px;letter-spacing:1px}.sub{color:var(--mut);font-size:13px;margin-top:2px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;margin:6px 0}
+.seg button{border:0;background:transparent;color:var(--mut);padding:11px 4px;border-radius:10px;font-size:14px;font-weight:700}
+.seg button.on{background:var(--acc);color:#fff}
+nav{display:flex;gap:8px;overflow-x:auto;padding:10px 0;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 14px;border-radius:12px;font-size:14px;font-weight:700}
+nav button small{display:block;font-size:10px;margin-top:2px}nav button.on{color:#fff;border-color:transparent}
+.hero{border-radius:16px;padding:16px;color:#fff;margin:6px 0 12px}.hero h2{margin:0;font-size:21px}.hero p{margin:4px 0 12px;font-size:13px;opacity:.92}
+.bar{height:10px;background:rgba(255,255,255,.3);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:#fff;transition:width .25s}.pct{font-size:12px;margin-top:6px;font-weight:700}
+.card,.ex{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.ex{display:flex;gap:10px;align-items:center}.mid{flex:1;min-width:0}
+.n,.sn{width:28px;height:28px;border-radius:50%;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.nm{font-weight:700;font-size:15px}.mut,.card p,.msg{color:var(--mut);font-size:13px;margin:2px 0}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.pr{background:var(--acc);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:10px;white-space:nowrap}
+.lh,label{font-size:10px;color:var(--mut);font-weight:700;display:block;margin-bottom:2px}
+.sr{display:grid;grid-template-columns:28px 1fr 1fr 46px;gap:8px;align-items:center;margin-bottom:6px}.sr.done input{opacity:.55}
+.pw{display:grid;grid-template-columns:84px 64px 1fr 38px;gap:6px;align-items:center;margin-bottom:6px;font-size:12px;color:var(--mut)}
+input,textarea{width:100%;padding:9px 6px;border-radius:8px;border:1px solid var(--line);background:var(--inp);color:var(--text);font-size:16px;font-family:inherit}
+.sr input{text-align:center}textarea{height:150px;font-size:12px}
+.ck{width:46px;height:46px;border-radius:12px;border:2px solid var(--line);background:transparent;color:transparent;font-size:24px;font-weight:700}.ck.on{color:#fff;border-color:transparent}
+.btn,.reset{padding:12px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--text);font-size:14px;font-weight:700}
+.reset{width:100%;margin:0 0 10px;border-style:dashed;color:var(--mut);font-weight:400}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}.btn.del{color:var(--acc)}.wide{width:100%;margin-top:8px}.big{width:100%;padding:16px;font-size:16px;margin-bottom:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.row .btn{flex:1}
+.ic{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--inp);color:var(--text)}.ic.del{color:var(--acc)}.ic:disabled{opacity:.3}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.w2{grid-column:span 2}
+.hrow{display:flex;justify-content:space-between;width:100%;text-align:left;color:var(--text);font-size:14px}.hrow span{color:var(--mut);font-size:12px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(92vw,520px);z-index:200;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;background:var(--card);border:1px solid #2ebd59;border-radius:12px;padding:12px 14px;box-shadow:0 6px 24px rgba(0,0,0,.5)}.toast .btn{flex:0 0 auto;padding:8px 12px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px}.dlg{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;width:100%;max-width:360px}.dlg h3{margin:0 0 6px;font-size:17px}.dlg p{margin:0 0 6px;font-size:13px;color:var(--mut)}
+.err{color:var(--acc);font-size:12px;min-height:14px}.card h3{margin:0 0 4px;font-size:17px}
+</style>
+</head>
+<body>
+<header><h1>🏋️ TREINO <span style="color:var(--acc)">PPL</span></h1><div class="sub">Push · Pull · Legs | Segunda a Sábado</div></header>
+<div class="seg" id="seg"></div><div id="nv"></div><main id="main"></main>
+<script>
+const COR={PUSH:"#e63946",PULL:"#1d8fe1",LEGS:"#2ebd59"};
+const DEF=[
+{d:"Segunda",t:"LEGS",m:"Pernas",e:["Hack","Leg Press","Cadeira Flexora","Mesa Flexora","Elevação de Quadril"]},
+{d:"Terça",t:"PUSH",m:"Peito · Ombro · Tríceps",e:["Supino Inclinado Halter","Supino Reto Máquina","Supino Declinado","Voador","Elevação Frontal","Elevação Lateral","Tríceps Corda Polia"]},
+{d:"Quarta",t:"PULL",m:"Costas · Bíceps · Antebraço",e:["Remada Curvada","Remada Baixa","Pulley Aberto","Pulley Tri","Lombar Banco","Rosca Scott"]},
+{d:"Quinta",t:"LEGS",m:"Pernas",e:["Cadeira Flexora","Cadeira Abdutora","Agachamento Livre","Extensora","Stiff"]},
+{d:"Sexta",t:"PUSH",m:"Peito · Ombro · Tríceps",e:["Supino Inclinado Máquina","Supino Reto Halter","Crucifixo Inclinado","Desenvolvimento","Elevação Lateral","Elevação Frontal Halter","Tríceps"]},
+{d:"Sábado",t:"PULL",m:"Costas · Bíceps · Antebraço",e:["T-Bar Row","Remada Máquina Fechada","Serrote","Pulley Aberto","Rosca Scott","Rosca Direta Corda"]}];
+const uid=()=>Math.random().toString(36).slice(2,9);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const bt=(c,x,f)=>{const b=el("button",c,x);b.onclick=f;return b};
+const num=v=>parseFloat(String(v).replace(",","."));
+const fm=v=>{const n=num(v);return isNaN(n)?"":String(Math.round(n*10)/10).replace(".",",")};
+const pad=n=>("0"+n).slice(-2);
+const hoje=()=>{const d=new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())};
+const br=i=>i?i.slice(8,10)+"/"+i.slice(5,7)+"/"+i.slice(0,4):"";
+function base(){return{ver:3,dias:DEF.map(D=>({d:D.d,t:D.t,m:D.m,e:D.e.map(n=>({id:uid(),n}))})),sess:[],pes:[],perfil:{nome:"",altura:"",meta:""},act:null}}
+function mig(o){
+  if(!o||!Array.isArray(o.dias)||!o.dias.every(d=>d&&d.d&&d.t&&Array.isArray(d.e)))return null;
+  if(o.ver===3){o.sess=o.sess||[];o.pes=o.pes||[];o.perfil=o.perfil||{nome:"",altura:"",meta:""};o.act=o.act||null;return o}
+  const s={ver:3,dias:o.dias,sess:[],pes:[],perfil:{nome:"",altura:"",meta:""},act:null},v=o.vals||{};
+  s.dias.forEach(D=>D.e.forEach(x=>{const a=v[x.id];if(a){x.ps=a.s;x.pr=a.r;x.pc=fm(a.c)}}));
+  const p=(o.perfis||[])[0];
+  if(p){s.perfil={nome:p.nome,altura:p.altura,meta:fm(p.meta)};s.pes.push({id:uid(),dt:hoje(),kg:fm(p.peso),obs:"Peso do cadastro anterior"})}
+  return s}
+function load(){
+  try{const a=mig(JSON.parse(localStorage.getItem("ppl_v3")));if(a)return a}catch(e){}
+  try{const b=mig(JSON.parse(localStorage.getItem("ppl_v2")));if(b)return b}catch(e){}
+  return base()}
+let S=load(),view="treino",edit=false,cf=null,und=null,sel=null,msg="",bk=null,DL=null,cx=null,gf="TODOS";
+const wd=new Date().getDay();let cur=wd>=1&&wd<=6?wd-1:0;
+const save=()=>{try{localStorage.setItem("ppl_v3",JSON.stringify(S))}catch(e){}};
+const act=()=>S.sess.find(s=>s.id===S.act&&s.st==="and")||null;
+let tt=null;
+function toast(msg,sn){const o=document.getElementById("toast");if(o)o.remove();clearTimeout(tt);
+  const t=el("div","toast");t.id="toast";t.setAttribute("role","status");t.appendChild(el("span","","✔ "+msg));
+  if(sn)t.appendChild(bt("btn pri","Desfazer",()=>{S=JSON.parse(sn);save();t.remove();render();toast("Ação desfeita com sucesso")}));
+  document.body.appendChild(t);tt=setTimeout(()=>t.remove(),sn?8000:3000)}
+function ask(msg,det,fn){const o=el("div","ov"),b=el("div","dlg");b.setAttribute("role","dialog");b.setAttribute("aria-modal","true");
+  b.append(el("h3","",msg),el("p","",det||""));
+  const r=el("div","row"),ys=bt("btn pri","Sim",()=>{o.remove();fn()});
+  r.append(bt("btn","Não",()=>o.remove()),ys);b.appendChild(r);o.appendChild(b);o.onclick=e=>{if(e.target===o)o.remove()};document.body.appendChild(o);ys.focus()}
+const del=(fn,msg)=>{const sn=JSON.stringify(S);fn();save();render();toast(msg||"Item excluído com sucesso",sn)};
+function pr(n){let m=0;S.sess.forEach(s=>s.ex.forEach(x=>{if(x.n.toLowerCase()===n.toLowerCase())x.sr.forEach(r=>{const c=num(r.c);if(r.ok&&c>m)m=c})}));return m}
+function inp(o,k,ph,im,f,cb){const i=el("input");i.placeholder=ph;i.setAttribute("inputmode",im);i.value=o[k]||"";
+  i.oninput=()=>{o[k]=i.value;save()};i.onchange=()=>{if(f){o[k]=fm(i.value);i.value=o[k]}save();if(cb)cb()};return i}
+const go=v=>{view=v;sel=null;cf=null;und=null;bk=null;msg="";render();scrollTo(0,0)};
+DL={save:o=>new Promise(ok=>{const u=URL.createObjectURL(new Blob([o.data],{type:"application/json"})),a=document.createElement("a");
+  a.href=u;a.download=o.filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);ok()})};
+
+function render(){
+  const sg=document.getElementById("seg");sg.innerHTML="";
+  [["treino","Treino"+(act()?" ●":"")],["hist","Histórico"],["perfil","Perfil"]].forEach(a=>sg.appendChild(bt(view===a[0]?"on":"",a[1],()=>go(a[0]))));
+  const nv=document.getElementById("nv"),m=document.getElementById("main");nv.innerHTML="";m.innerHTML="";
+  if(view==="treino"){if(!act())nav(nv);treino(m)}else if(view==="hist")hist(m);else perfil(m);
+}
+function nav(nv){const n=el("nav");
+  S.dias.forEach((D,i)=>{const b=bt(i===cur?"on":"","",()=>{cur=i;edit=false;render();scrollTo(0,0)});
+    if(i===cur)b.style.background=COR[D.t];b.innerHTML=D.d+"<small>"+D.t+"</small>";n.appendChild(b)});
+  nv.appendChild(n)}
+function exs(m,s){const col=COR[s.t];
+  s.ex.forEach((x,j)=>{
+    const c=el("div","card"),h=el("div","hd");h.appendChild(el("div","nm",(j+1)+". "+x.n));
+    const p=pr(x.n);if(p)h.appendChild(el("span","pr","PR "+fm(p)+" kg"));c.appendChild(h);
+    if(s.st==="and"){const u=ult(x.n,s.id);if(u)c.appendChild(el("div","mut","Última vez: "+u))}
+    c.appendChild(el("div","lh","SÉRIE · REPS · CARGA (kg) · FEITA"));
+    x.sr.forEach((r,k)=>{
+      const w=el("div","sr"+(r.ok?" done":"")),n=el("span","sn",k+1);n.style.background=col;
+      const ck=bt("ck"+(r.ok?" on":""),"✔",()=>{r.ok=r.ok?0:1;save();render()});
+      ck.setAttribute("aria-label","Série concluída");if(r.ok)ck.style.background=col;
+      const au=()=>{const f=String(r.r||"").trim()!==""&&num(r.c)>0;if(f!==!!r.ok){r.ok=f?1:0;save();render()}};
+      w.append(n,inp(r,"r","reps","numeric",0,()=>{au();if(s.st!=="and")toast("Sessão atualizada com sucesso")}),inp(r,"c","kg","decimal",1,()=>{au();if(s.st!=="and")toast("Sessão atualizada com sucesso")}),ck);c.appendChild(w)});
+    const q=el("div","row");
+    q.append(bt("btn","+ série",()=>{const l=x.sr[x.sr.length-1]||{};x.sr.push({r:l.r||"",c:l.c||"",ok:0});save();render()}),
+      bt("btn","− série",()=>{if(x.sr.length>1){x.sr.pop();save();render()}}));
+    c.appendChild(q);m.appendChild(c)})}
+function ult(n,id){const L=S.sess.filter(s=>s.id!==id&&s.st==="ok").sort((a,b)=>b.ini-a.ini);
+  for(const s of L){const x=s.ex.find(e=>e.n.toLowerCase()===n.toLowerCase());
+    if(x){const o=x.sr.filter(r=>r.ok).map(r=>(r.r||"?")+"×"+(fm(r.c)||"?")+" kg");if(o.length)return o.join(" · ")}}return ""}
+const GOLD="#f4c542";
+const tx=(x,y,s,a,c,w)=>'<text x="'+x+'" y="'+y+'" text-anchor="'+a+'" style="fill:'+(c||"var(--mut)")+';font-size:10px;font-weight:'+(w||400)+'">'+s+'</text>';
+function leg(a){return '<div style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:var(--mut);margin-top:4px">'+a.map(i=>'<span style="display:inline-flex;align-items:center;gap:5px">'+(i[1]==="dash"?'<i style="width:16px;border-top:2px dashed '+i[0]+';display:inline-block"></i>':'<i style="width:10px;height:10px;border-radius:50%;background:'+i[0]+';display:inline-block"></i>')+i[2]+'</span>').join("")+'</div>'}
+function xl(pts,X,H,mid){const n=pts.length,s=n<=6?pts.map((p,i)=>i):[0,Math.floor((n-1)/2),n-1];
+  return s.map(i=>tx(X(i),H-8,br(pts[i].x).slice(0,5),mid?"middle":i===0?"start":i===n-1?"end":"middle")).join("")}
+function prset(n){let b=null;S.sess.forEach(s=>s.ex.forEach(x=>{if(x.n.toLowerCase()===n.toLowerCase())x.sr.forEach(r=>{
+  const c=num(r.c);if(!r.ok||!(c>0))return;const q=parseInt(r.r)||0;if(!b||c>b.c||(c===b.c&&q>b.q))b={c:c,q:q,r:r.r}})}));return b}
+function chart(pts,un,cor,o){o=o||{};const d=el("div"),n=pts.length;
+  if(n<2){d.appendChild(el("div","msg","Registre ao menos 2 pontos para ver o gráfico."));return d}
+  const W=340,H=190,l=40,r=16,t=24,b=28,ys=pts.map(p=>p.y);if(o.meta>0)ys.push(o.meta);
+  let lo=Math.min(...ys),hi=Math.max(...ys);if(lo===hi){lo-=1;hi+=1}const pd=(hi-lo)*.12;lo-=pd;hi+=pd;
+  const X=i=>l+i*(W-l-r)/(n-1),Y=v=>t+(hi-v)*(H-t-b)/(hi-lo);
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Gráfico de evolução">';
+  [lo,(lo+hi)/2,hi].forEach(v=>{s+='<line x1="'+l+'" y1="'+Y(v)+'" x2="'+(W-r)+'" y2="'+Y(v)+'" style="stroke:var(--line)"/>'+tx(l-5,Y(v)+3,fm(v),"end")});
+  if(o.meta>0)s+='<line x1="'+l+'" y1="'+Y(o.meta)+'" x2="'+(W-r)+'" y2="'+Y(o.meta)+'" stroke-dasharray="5 4" style="stroke:'+GOLD+'"/>';
+  s+='<polyline fill="none" stroke-width="2.5" points="'+pts.map((p,i)=>X(i)+","+Y(p.y)).join(" ")+'" style="stroke:'+cor+'"/>';
+  pts.forEach((p,i)=>{
+    s+='<circle cx="'+X(i)+'" cy="'+Y(p.y)+'" r="'+(p.pr?6:3.5)+'" style="fill:'+(p.pr?GOLD:cor)+'"'+(p.pr?' stroke-width="2" stroke="var(--bg)"':'')+'/>';
+    if(p.pr||(o.lbl==="all"&&(n<=8||i===0||i===n-1)))s+=tx(X(i),Y(p.y)-(p.pr?10:8),fm(p.y),i===0?"start":i===n-1?"end":"middle",p.pr?GOLD:"var(--text)",700)});
+  d.innerHTML=s+xl(pts,X,H)+'</svg>'+leg(o.leg||[]);
+  const z=pts[n-1].y,df=Math.round((z-pts[0].y)*10)/10;
+  d.appendChild(el("div","msg","Último: "+fm(z)+" "+un+" · variação: "+(df>0?"+":"")+String(df).replace(".",",")+" "+un));
+  return d}
+function bars(pts,cor){const d=el("div"),n=pts.length;
+  if(n<2){d.appendChild(el("div","msg","Registre ao menos 2 sessões para ver o gráfico."));return d}
+  const W=340,H=150,l=40,r=16,t=20,b=26,hi=Math.max(...pts.map(p=>p.y)),bw=Math.min(34,(W-l-r)/n*.6),X=i=>l+(i+.5)*(W-l-r)/n,Y=v=>t+(hi-v)*(H-t-b)/hi;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Volume por sessão"><line x1="'+l+'" y1="'+Y(0)+'" x2="'+(W-r)+'" y2="'+Y(0)+'" style="stroke:var(--line)"/>'+tx(l-5,Y(0)+3,"0","end")+tx(l-5,Y(hi)+3,fm(hi),"end");
+  pts.forEach((p,i)=>{s+='<rect x="'+(X(i)-bw/2)+'" y="'+Y(p.y)+'" width="'+bw+'" height="'+(Y(0)-Y(p.y))+'" rx="3" style="fill:'+cor+';opacity:.85"/>';
+    if(n<=8)s+=tx(X(i),Y(p.y)-4,fm(p.y),"middle","var(--text)",700)});
+  d.innerHTML=s+xl(pts,X,H,1)+'</svg>'+leg([[cor,"dot","Volume = soma de reps × kg das séries concluídas"]]);return d}
+function fbar(m){const g=el("div","seg");g.style.gridTemplateColumns="repeat(4,1fr)";
+  ["TODOS","PUSH","PULL","LEGS"].forEach(k=>{const b=bt(gf===k?"on":"",k==="TODOS"?"Todos":k,()=>{gf=k;render()});
+    if(gf===k&&k!=="TODOS")b.style.background=COR[k];g.appendChild(b)});m.appendChild(g)}
+function evo(m){
+  const L=S.sess.filter(s=>gf==="TODOS"||s.t===gf).sort((a,b)=>(a.dia>b.dia)-(a.dia<b.dia)||a.ini-b.ini),nm=[];
+  L.forEach(s=>s.ex.forEach(x=>{if(x.sr.some(r=>r.ok&&num(r.c)>0)&&!nm.some(n=>n.toLowerCase()===x.n.toLowerCase()))nm.push(x.n)}));
+  const c=el("div","card");c.appendChild(el("h3","","Evolução da carga"));
+  if(!nm.length){c.appendChild(el("div","msg","Conclua séries com carga para ver o gráfico."));m.appendChild(c);return}
+  if(!cx||!nm.includes(cx))cx=nm[0];
+  const sl=el("select");sl.style.cssText="width:100%;padding:9px;border-radius:8px;border:1px solid var(--line);background:var(--inp);color:var(--text);font-size:16px;margin:6px 0";
+  nm.forEach(n=>{const o=el("option","",n);o.value=n;if(n===cx)o.selected=true;sl.appendChild(o)});
+  sl.onchange=()=>{cx=sl.value;render()};
+  const ser=[];let mx=0;
+  L.forEach(s=>{const x=s.ex.find(e=>e.n.toLowerCase()===cx.toLowerCase());if(!x)return;
+    const ok=x.sr.filter(r=>r.ok&&num(r.c)>0);if(!ok.length)return;
+    const mc=Math.max(...ok.map(r=>num(r.c))),v=ok.reduce((a,r)=>a+(parseInt(r.r)||0)*num(r.c),0);
+    ser.push({x:s.dia,y:mc,v:v,pr:mc>mx});if(mc>mx)mx=mc});
+  const q=prset(cx),g=el("div","g2"),dv=ser.length>1?Math.round((ser[ser.length-1].y-ser[0].y)*10)/10:0;
+  const st=(a,b)=>{const e=el("div");e.style.cssText="background:var(--inp);border-radius:10px;padding:8px";e.append(el("label","",a),el("div","nm",b));return e};
+  g.append(st("PR ATUAL",q?(q.q?q.q+" reps × ":"")+fm(q.c)+" kg":"—"),st("1RM ESTIMADO",q&&q.q>0?fm(q.c*(1+q.q/30))+" kg":"—"),
+    st("SESSÕES",String(ser.length)),st("VARIAÇÃO DA CARGA",(dv>0?"+":"")+String(dv).replace(".",",")+" kg"));
+  const t1=el("div","msg","Carga máxima por sessão"),t2=el("div","msg","Volume total por sessão");t1.style.fontWeight=t2.style.fontWeight="700";
+  c.append(sl,g,t1,chart(ser,"kg","var(--acc)",{leg:[["var(--acc)","dot","Carga máxima da sessão"],[GOLD,"dot","Novo PR (valor em kg)"]]}),
+    t2,bars(ser.filter(p=>p.v>0).map(p=>({x:p.x,y:p.v})),"#1d8fe1"),el("div","msg","1RM estimado pela fórmula de Epley: carga × (1 + reps ÷ 30)."));
+  m.appendChild(c)}
+function ini(D){
+  const s={id:uid(),d:D.d,t:D.t,m:D.m,dia:hoje(),ini:Date.now(),fim:0,st:"and",
+    ex:D.e.map(x=>({id:x.id,n:x.n,sr:Array.from({length:parseInt(x.ps)||3},()=>({r:"",c:"",ok:0}))}))};
+  S.sess.push(s);S.act=s.id;save();render();scrollTo(0,0);toast("Treino iniciado com sucesso")}
+function fim(A){
+  A.st="ok";A.fim=Date.now();
+  A.ex.forEach(x=>{const l=x.sr[x.sr.length-1];if(l)S.dias.forEach(D=>D.e.forEach(f=>{if(f.id===x.id){f.ps=x.sr.length;f.pr=l.r;f.pc=l.c}}))});
+  S.act=null;save();view="hist";sel=A.id;render();scrollTo(0,0);toast("Treino finalizado e salvo com sucesso")}
+function treino(m){
+  const A=act(),D=S.dias[cur],T=A||D,col=COR[T.t],h=el("div","hero");h.style.background=col;
+  h.innerHTML='<h2></h2><p></p><div class="bar"><i></i></div><div class="pct"></div>';
+  h.querySelector("h2").textContent=(A?"EM ANDAMENTO · ":"")+T.d.toUpperCase()+" — "+T.t;h.querySelector("p").textContent=T.m;m.appendChild(h);
+  if(A){
+    const tot=A.ex.reduce((a,x)=>a+x.sr.length,0),ok=A.ex.reduce((a,x)=>a+x.sr.filter(r=>r.ok).length,0),p=tot?Math.round(ok/tot*100):0;
+    h.querySelector("i").style.width=p+"%";h.querySelector(".pct").textContent=ok+" de "+tot+" séries · "+p+"%";
+    exs(m,A);
+    const r=el("div","row");
+    r.append(bt("btn pri","Finalizar treino",()=>fim(A)),
+      bt("btn del","Cancelar treino",()=>ask("Tem certeza que deseja cancelar este treino?","A sessão em andamento será descartada.",()=>del(()=>{S.sess=S.sess.filter(s=>s!==A);S.act=null},"Treino cancelado com sucesso"))));
+    m.appendChild(r);return}
+  h.querySelector(".bar").style.display="none";h.querySelector(".pct").textContent=D.e.length+" exercícios na ficha";
+  if(!edit)m.appendChild(bt("btn pri big","▶ Iniciar treino",()=>ini(D)));
+  m.appendChild(bt("reset",edit?"✔ Concluir edição":"✎ Editar ficha",()=>{const was=edit;edit=!edit;render();if(was)toast("Ficha salva com sucesso")}));
+  D.e.forEach((x,j)=>{
+    const c=el("div","ex"),n=el("div","n",j+1);n.style.background=col;c.appendChild(n);
+    if(edit){
+      const i=el("input");i.value=x.n;i.setAttribute("aria-label","Nome do exercício");i.oninput=()=>{x.n=i.value;save()};i.onchange=()=>toast("Exercício renomeado com sucesso");
+      const up=bt("ic","▲",()=>{D.e.splice(j-1,0,D.e.splice(j,1)[0]);save();render();toast("Ordem atualizada com sucesso")}),
+        dn=bt("ic","▼",()=>{D.e.splice(j+1,0,D.e.splice(j,1)[0]);save();render();toast("Ordem atualizada com sucesso")}),
+        rm=bt("ic del","✕",()=>ask("Tem certeza que deseja excluir este exercício da ficha?",x.n+". O histórico de treinos já feitos não será apagado.",()=>del(()=>D.e.splice(j,1),"Exercício excluído com sucesso")));
+      up.disabled=!j;dn.disabled=j===D.e.length-1;c.append(i,up,dn,rm)}
+    else{const mid=el("div","mid"),p=pr(x.n);mid.appendChild(el("div","nm",x.n));
+      const q=prset(x.n),pt=q?["PR "+(q.r||"?")+" reps",fm(q.c)+" kg"]:[].concat(x.pr?["PR "+x.pr+" reps"]:[],x.pc?[x.pc+" kg"]:[]);const d=el("div","mut",pt.join(" · ")||"Sem registro ainda");d.style.color=col;d.style.fontWeight="700";mid.appendChild(d);c.appendChild(mid)}
+    m.appendChild(c)});
+  if(edit){
+    const ad=el("div","row"),ai=el("input");ai.placeholder="Novo exercício";ai.style.flex="1";
+    const add=()=>{const n=ai.value.trim();if(!n)return;D.e.push({id:uid(),n});save();render();toast("Exercício adicionado com sucesso")};
+    ai.onkeydown=e=>{if(e.key==="Enter")add()};ad.append(ai,bt("btn pri","+ Adicionar",add));m.appendChild(ad);
+    m.appendChild(el("div","msg","Excluir da ficha não apaga o histórico de treinos já feitos."))}
+}
+function hist(m){
+  const s=S.sess.find(x=>x.id===sel);
+  if(s){
+    m.appendChild(bt("reset","← Voltar ao histórico",()=>{sel=null;render()}));
+    const c=el("div","card");c.appendChild(el("h3","",s.d+" — "+s.t+(s.st==="and"?" (em andamento)":"")));
+    c.appendChild(el("p","",s.fim?"Duração: "+Math.max(1,Math.round((s.fim-s.ini)/60000))+" min":"Sem duração registrada"));
+    const di=el("input");di.type="date";di.value=s.dia;di.onchange=()=>{if(di.value){s.dia=di.value;save();toast("Data atualizada com sucesso")}};
+    c.append(el("label","","DATA"),di);m.appendChild(c);exs(m,s);
+    m.appendChild(bt("btn del wide","Excluir esta sessão",()=>ask("Tem certeza que deseja excluir este treino?",s.d+" · "+br(s.dia)+". Todas as séries desta sessão serão apagadas.",()=>del(()=>{S.sess=S.sess.filter(x=>x!==s);if(S.act===s.id)S.act=null;sel=null},"Treino excluído com sucesso"))));return}
+  fbar(m);evo(m);const L=S.sess.filter(s=>gf==="TODOS"||s.t===gf).sort((a,b)=>(b.dia>a.dia)-(b.dia<a.dia)||b.ini-a.ini);
+  if(!L.length)m.appendChild(el("div","msg",(gf==="TODOS"?"Nenhum treino registrado ainda. Inicie um na aba Treino.":"Nenhum treino de "+gf+" registrado ainda.")));
+  L.forEach(s=>{
+    const tot=s.ex.reduce((a,x)=>a+x.sr.length,0),ok=s.ex.reduce((a,x)=>a+x.sr.filter(r=>r.ok).length,0);
+    const c=el("button","card hrow");c.style.borderLeft="5px solid "+COR[s.t];c.innerHTML="<b></b><span></span>";
+    c.firstChild.textContent=br(s.dia)+" · "+s.d+" "+s.t;c.lastChild.textContent=ok+"/"+tot+" séries"+(s.st==="and"?" · em andamento":"");
+    c.onclick=()=>{sel=s.id;render();scrollTo(0,0)};m.appendChild(c)})}
+function perfil(m){
+  const P=S.perfil,f=el("div","card"),g=el("div","g2");f.appendChild(el("h3","","Perfil"));
+  [["nome","NOME","text","w2"],["altura","ALTURA (cm)","numeric"],["meta","META DE PESO (kg)","decimal"]].forEach(a=>{
+    const w=el("div",a[3]||"");w.append(el("label","",a[1]),inp(P,a[0],"",a[2],a[0]==="meta",()=>toast("Perfil atualizado com sucesso")));g.appendChild(w)});
+  f.appendChild(g);m.appendChild(f);
+  const ps=S.pes.slice().sort((a,b)=>a.dt<b.dt?-1:a.dt>b.dt?1:0),at=ps[ps.length-1],w=el("div","card");
+  w.appendChild(el("h3","","Peso corporal"));w.appendChild(chart(ps.map(p=>({x:p.dt,y:num(p.kg)})).filter(p=>!isNaN(p.y)),"kg","var(--acc)",{meta:num(P.meta),lbl:"all",leg:[["var(--acc)","dot","Peso (kg)"]].concat(num(P.meta)>0?[[GOLD,"dash","Meta ("+fm(P.meta)+" kg)"]]:[])}));
+  if(at){w.appendChild(el("p","","Atual "+fm(at.kg)+" kg · Inicial "+fm(ps[0].kg)+" kg"+(P.meta?" · Meta "+fm(P.meta)+" kg":"")));
+    const d=Math.round((num(at.kg)-num(P.meta))*10)/10;
+    if(P.meta&&!isNaN(d))w.appendChild(el("p","",d>0?"Faltam "+d+" kg para a meta":d<0?Math.abs(d)+" kg abaixo da meta":"Meta atingida"))}
+  const gg=el("div","g2"),dd=el("input"),kg=el("input"),ob=el("input"),er=el("div","err");
+  dd.type="date";dd.value=hoje();kg.setAttribute("inputmode","decimal");ob.placeholder="Observação (opcional)";
+  const a1=el("div"),a2=el("div"),a3=el("div","w2");
+  a1.append(el("label","","DATA"),dd);a2.append(el("label","","PESO (kg)"),kg);a3.appendChild(ob);gg.append(a1,a2,a3);
+  w.append(gg,er,bt("btn pri wide","Registrar pesagem",()=>{
+    const k=num(kg.value);if(!(k>0)||!dd.value){er.textContent="Informe data e peso válidos.";return}
+    S.pes.push({id:uid(),dt:dd.value,kg:fm(k),obs:ob.value.trim()});save();render();toast("Pesagem registrada com sucesso")}));
+  const lh=el("div","msg","Histórico");lh.style.marginTop="12px";w.appendChild(lh);
+  ps.slice().reverse().forEach(p=>{const r=el("div","pw");
+    r.append(el("span","",br(p.dt)),inp(p,"kg","kg","decimal",1,()=>toast("Pesagem atualizada com sucesso")),inp(p,"obs","obs","text",0,()=>toast("Pesagem atualizada com sucesso")),bt("ic del","✕",()=>ask("Tem certeza que deseja excluir esta pesagem?",br(p.dt)+" · "+fm(p.kg)+" kg",()=>del(()=>{S.pes=S.pes.filter(x=>x!==p)},"Pesagem excluída com sucesso"))));w.appendChild(r)});
+  m.appendChild(w);
+  const b=el("div","card"),ms=el("div","msg",msg),ta=el("textarea");
+  b.appendChild(el("h3","","Backup e restauração"));
+  b.appendChild(el("p","","Inclui ficha, sessões, séries, pesagens e perfil."));
+  ta.value=bk!=null?bk:JSON.stringify(S);ta.oninput=()=>{bk=ta.value};
+  const r=el("div","row");
+  if(DL)r.appendChild(bt("btn pri","Baixar .json",()=>DL.save({filename:"treino-ppl-backup-"+hoje()+".json",data:JSON.stringify(S,null,1)})
+    .then(()=>{ms.textContent="Backup salvo."},e=>{ms.textContent=e&&e.code==="declined"?"Download cancelado.":"Não foi possível baixar. Use Copiar."})));
+  r.appendChild(bt("btn","Copiar",()=>{ta.select();try{navigator.clipboard.writeText(ta.value)}catch(e){}try{document.execCommand("copy")}catch(e){}ms.textContent="Copiado."}));
+  const fi=el("input");fi.type="file";fi.accept=".json,application/json";
+  fi.onchange=()=>{const f=fi.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{bk=String(rd.result);cf=null;render()};rd.readAsText(f)};
+  b.append(ta,ms,r,el("label","","IMPORTAR ARQUIVO .json"),fi);
+  b.appendChild(bt("btn del wide","Restaurar backup",()=>{bk=ta.value;ask("Tem certeza que deseja restaurar este backup?","Todos os dados atuais serão substituídos.",()=>{
+    let a=null;try{a=mig(JSON.parse(bk))}catch(e){}
+    if(!a){msg="Arquivo inválido. Seus dados atuais foram mantidos.";render();return}
+    S=a;save();bk=null;msg="";render();toast("Backup restaurado com sucesso")})}));
+  m.appendChild(b)}
+render();
+</script>
+</body>
+</html>
